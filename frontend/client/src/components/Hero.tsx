@@ -11,25 +11,26 @@ export function Hero() {
     contactSection?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const handleResumeDownload = async () => {
-    setIsDownloading(true)
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/resume/')
-      const data = await response.json()
+ const handleResumeDownload = async () => {
+  setIsDownloading(true)
+  try {
+    const response = await fetch('http://127.0.0.1:8000/api/resume/')
+    const data = await response.json()
 
-      if (data.length > 0) {
-        const resumeUrl = `http://127.0.0.1:8000${data[0].file}`
-        window.open(resumeUrl, '_blank')
-      } else {
-        alert('No resume uploaded yet!')
-      }
-    } catch (error) {
-      console.error('Error fetching resume:', error)
-      alert('Unable to fetch resume. Please try again later.')
-    } finally {
-      setIsDownloading(false)
+    if (data.length > 0) {
+      const resumeUrl = `http://127.0.0.1:8000${data[0].file}`;
+      window.open(resumeUrl, '_blank');
+    } else {
+      alert('No resume uploaded yet!')
     }
+  } catch (error) {
+    console.error('Error fetching resume:', error)
+    alert('Unable to fetch resume. Please try again later.')
+  } finally {
+    setIsDownloading(false)
   }
+}
+
 
   const handleScrollDown = () => {
     const skillsSection = document.getElementById('skills')

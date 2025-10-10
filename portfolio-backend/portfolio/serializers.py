@@ -41,6 +41,13 @@ class ContactMessageSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "email", "subject", "message", "created_at"]
         
 class ResumeSerializer(serializers.ModelSerializer):
+    public_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Resume
-        fields = ['id', 'title', 'file', 'uploaded_at']
+        fields = ['id', 'title', 'file', 'uploaded_at', 'public_url']
+
+    def get_public_url(self, obj):
+        # If using Supabase, store the public URL in your model or construct it
+        # Example: "https://<SUPABASE_URL>/storage/v1/object/public/resumes/<filename>"
+        return f"https://crgaqiszkxmkuyxqacvk.supabase.co/storage/v1/object/public/resumes/{obj.file.name.split('/')[-1]}"

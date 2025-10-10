@@ -1,4 +1,5 @@
 from django.db import models
+from .supabase_utils import upload_file_to_supabase
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
@@ -82,8 +83,16 @@ class ContactMessage(models.Model):
     
 class Resume(models.Model):
     title = models.CharField(max_length=100, default="Resume")
-    file = models.FileField(upload_to='resumes/') 
+    file = models.FileField(upload_to='resumes/', blank=True, null=True)  # temp upload for admin
+    public_url = models.URLField(blank=True, null=True)  # stores Supabase public URL
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if self.file:
+            # Upload to Supabase
+            self.public_url = upload_file_to_supabase(self.file, self.file.name)
+            self.file = None  # clear temp field
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return self.title  
+        return self.title

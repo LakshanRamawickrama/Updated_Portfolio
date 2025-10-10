@@ -1,20 +1,15 @@
 from pathlib import Path
+import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-%c5_eah^ih((=8vzep5vz72+ve$hxxyp51w@dnjr6m9aa#xqa)'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CORS_ALLOW_ALL_ORIGINS = True
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -44,9 +39,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -56,6 +49,12 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'rgrlakshancontact@gmail.com'  # your email
 EMAIL_HOST_PASSWORD = 'iizc rdvh tqss erru'  # use App Password if using Gmail
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Supabase configuration
+
+SUPABASE_URL = "https://crgaqiszkxmkuyxqacvk.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyZ2FxaXN6a3hta3V5eHFhY3ZrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTg5MTIxMSwiZXhwIjoyMDc1NDY3MjExfQ.YgYObI3EWBcUmJLPTzpgrTZFNsf_QqyijatG9b0BScw"
+SUPABASE_BUCKET = "media"  # your bucket name
 
 
 ROOT_URLCONF = 'backend.urls'
