@@ -6,7 +6,7 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 DEBUG = env.bool("DEBUG", default=False)
-ALLOWED_HOSTS = ["your-app-name.onrender.com"]
+ALLOWED_HOSTS = ['rgrlakshan.pythonanywhere.com']
 BASE_DIR = Path(__file__).resolve().parent.parent
 CORS_ALLOW_ALL_ORIGINS = True
 MEDIA_URL = '/media/'
@@ -40,8 +40,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-     'MIDDLEWARE',
+    
 ]
 
 
@@ -104,10 +103,9 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (for Render)
+# Static files 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

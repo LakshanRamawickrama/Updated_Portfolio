@@ -29,12 +29,12 @@ export function Education() {
   const [certificationsData, setCertificationsData] = useState<CertificateType[]>([])
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/education/')
+    fetch('http://rgrlakshan.pythonanywhere.com/api/education/')
       .then(res => res.json())
       .then(data => setEducationData(data))
       .catch(err => console.error('Error fetching education:', err))
 
-    fetch('http://127.0.0.1:8000/api/certificates/')
+    fetch('http://rgrlakshan.pythonanywhere.com/api/certificates/')
       .then(res => res.json())
       .then(data => setCertificationsData(data))
       .catch(err => console.error('Error fetching certifications:', err))

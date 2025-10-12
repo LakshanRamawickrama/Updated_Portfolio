@@ -21,7 +21,7 @@ export function Projects() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get<Project[]>("http://127.0.0.1:8000/api/projects/")
+    axios.get<Project[]>("http://rgrlakshan.pythonanywhere.com/api/projects/")
       .then(res => setProjects(res.data))
       .catch(err => console.error("Error fetching projects:", err))
       .finally(() => setLoading(false))

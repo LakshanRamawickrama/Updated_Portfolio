@@ -14,11 +14,11 @@ export function Hero() {
  const handleResumeDownload = async () => {
   setIsDownloading(true)
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/resume/')
+    const response = await fetch('http://rgrlakshan.pythonanywhere.com/api/resume/')
     const data = await response.json()
 
     if (data.length > 0) {
-      const resumeUrl = data[0].public_url || `http://127.0.0.1:8000${data[0].file}`;
+      const resumeUrl = data[0].public_url || `http://rgrlakshan.pythonanywhere.com${data[0].file}`;
       window.open(resumeUrl, '_blank');
     } else {
       alert('No resume uploaded yet!')

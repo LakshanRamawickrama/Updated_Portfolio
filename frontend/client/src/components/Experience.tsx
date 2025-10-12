@@ -19,7 +19,7 @@ export function Experience() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/experience/")
+    fetch("http://rgrlakshan.pythonanywhere.com/api/experience/")
       .then(res => res.json())
       .then(data => setExperience(data))
       .catch(err => console.error("Error fetching experience:", err))

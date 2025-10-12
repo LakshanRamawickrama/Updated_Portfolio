@@ -21,7 +21,7 @@ export function Skills() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/skills/")
+    fetch("http://rgrlakshan.pythonanywhere.com/api/skills/")
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(err => {
