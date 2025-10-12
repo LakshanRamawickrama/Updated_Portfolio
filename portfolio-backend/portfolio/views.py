@@ -58,5 +58,5 @@ class ContactMessageViewSet(viewsets.ModelViewSet):
 class ResumeListView(APIView):
     def get(self, request):
         resumes = Resume.objects.all()
-        serializer = ResumeSerializer(resumes, many=True)
+        serializer = ResumeSerializer(resumes, many=True, context={'request': request})
         return Response(serializer.data)

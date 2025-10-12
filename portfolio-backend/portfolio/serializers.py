@@ -45,9 +45,17 @@ class ResumeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resume
-        fields = ['id', 'title', 'file', 'uploaded_at', 'public_url']
+        fields = ['id', 'file', 'public_url']
 
     def get_public_url(self, obj):
-        # If using Supabase, store the public URL in your model or construct it
-        # Example: "https://<SUPABASE_URL>/storage/v1/object/public/resumes/<filename>"
-        return f"https://crgaqiszkxmkuyxqacvk.supabase.co/storage/v1/object/public/resumes/{obj.file.name.split('/')[-1]}"
+        request = self.context.get('request')
+        if obj.file:
+            if request:
+                return request.build_absolute_uri(obj.file.url)
+            else:
+                return obj.file.url  # fallback for tests or no context
+        return None
+
+
+
+    

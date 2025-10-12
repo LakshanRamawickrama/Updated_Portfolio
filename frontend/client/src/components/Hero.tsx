@@ -18,7 +18,7 @@ export function Hero() {
     const data = await response.json()
 
     if (data.length > 0) {
-      const resumeUrl = `http://127.0.0.1:8000${data[0].file}`;
+      const resumeUrl = data[0].public_url || `http://127.0.0.1:8000${data[0].file}`;
       window.open(resumeUrl, '_blank');
     } else {
       alert('No resume uploaded yet!')

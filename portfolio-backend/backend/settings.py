@@ -50,12 +50,6 @@ EMAIL_HOST_USER = 'rgrlakshancontact@gmail.com'  # your email
 EMAIL_HOST_PASSWORD = 'iizc rdvh tqss erru'  # use App Password if using Gmail
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# Supabase configuration
-
-SUPABASE_URL = "https://crgaqiszkxmkuyxqacvk.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyZ2FxaXN6a3hta3V5eHFhY3ZrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1OTg5MTIxMSwiZXhwIjoyMDc1NDY3MjExfQ.YgYObI3EWBcUmJLPTzpgrTZFNsf_QqyijatG9b0BScw"
-SUPABASE_BUCKET = "media"  # your bucket name
-
 
 ROOT_URLCONF = 'backend.urls'
 
