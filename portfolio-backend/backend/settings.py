@@ -1,15 +1,18 @@
 from pathlib import Path
 import os
+import dj_database_url
+import environ
 
+env = environ.Env()
+environ.Env.read_env()
+DEBUG = env.bool("DEBUG", default=False)
+ALLOWED_HOSTS = ["your-app-name.onrender.com"]
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-%c5_eah^ih((=8vzep5vz72+ve$hxxyp51w@dnjr6m9aa#xqa)'
-DEBUG = True
 CORS_ALLOW_ALL_ORIGINS = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -37,18 +40,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+     'MIDDLEWARE',
 ]
-
-
-
-# Email configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'rgrlakshancontact@gmail.com'  # your email
-EMAIL_HOST_PASSWORD = 'iizc rdvh tqss erru'  # use App Password if using Gmail
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 ROOT_URLCONF = 'backend.urls'
@@ -71,14 +65,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+# Database (keep SQLite for now)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=env.str("DATABASE_URL", default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}")
+    )
 }
 
 
@@ -113,12 +104,10 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
+# Static files (for Render)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
