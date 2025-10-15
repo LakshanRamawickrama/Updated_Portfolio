@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,18 +9,12 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export function Contact() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,30 +22,18 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formData,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data?.message || 'Failed to send email');
-      }
-
-      toast({
-        title: 'Message sent!',
-        description: "Thank you for your message. I'll get back to you soon.",
-      });
-
+      toast({ title: 'Message sent!', description: "Thank you for your message." });
       setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      toast({
-        title: 'Error',
-        description: err.message || 'Something went wrong. Please try again later.',
-        variant: 'destructive',
-      });
+      toast({ title: 'Error', description: 'Failed to send email.', variant: 'destructive' });
     } finally {
       setIsSubmitting(false);
     }
@@ -102,6 +85,23 @@ export function Contact() {
                 </div>
               </CardContent>
             </Card>
+
+            <Card className="hover-elevate">
+              <CardHeader>
+                <CardTitle>Professional References</CardTitle>
+                <CardDescription>Available upon request</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <p className="font-medium text-sm">Mrs D.N.P. Attanayake</p>
+                  <p className="text-xs text-muted-foreground">Senior Lecturer, SLIATE Galle</p>
+                </div>
+                <div>
+                  <p className="font-medium text-sm">Mrs P.K.A.G. Shashika</p>
+                  <p className="text-xs text-muted-foreground">Executive Officer, Bank Of Ceylon</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Contact Form */}
@@ -134,7 +134,7 @@ export function Contact() {
                 </div>
 
                 <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
-                  {isSubmitting ? 'Sending...' : <><Send className="w-4 h-4" />Send Message</>}
+                  {isSubmitting ? 'Sending...' : <><Send className="w-4 h-4" /> Send Message</>}
                 </Button>
               </form>
             </CardContent>
