@@ -19,10 +19,7 @@ export function Contact() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,8 +27,7 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
-      // ✅ Use your actual deployed backend endpoint
-      const res = await fetch('https://updated-portfolio-five-delta.vercel.app/api/send-email', {
+      const res = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -77,7 +73,7 @@ export function Contact() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Contact Information */}
+          {/* Contact Info */}
           <div className="space-y-6">
             <Card className="hover-elevate">
               <CardHeader>
@@ -106,23 +102,6 @@ export function Contact() {
                 </div>
               </CardContent>
             </Card>
-
-            <Card className="hover-elevate">
-              <CardHeader>
-                <CardTitle>Professional References</CardTitle>
-                <CardDescription>Available upon request</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <p className="font-medium text-sm">Mrs D.N.P. Attanayake</p>
-                  <p className="text-xs text-muted-foreground">Senior Lecturer, SLIATE Galle</p>
-                </div>
-                <div>
-                  <p className="font-medium text-sm">Mrs P.K.A.G. Shashika</p>
-                  <p className="text-xs text-muted-foreground">Executive Officer, Bank Of Ceylon</p>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Contact Form */}
@@ -136,63 +115,26 @@ export function Contact() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Name *</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      autoComplete="name"
-                    />
+                    <Input id="name" name="name" value={formData.name} onChange={handleInputChange} required />
                   </div>
                   <div>
                     <Label htmlFor="email">Email *</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                      autoComplete="email"
-                    />
+                    <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} required />
                   </div>
                 </div>
 
                 <div>
                   <Label htmlFor="subject">Subject *</Label>
-                  <Input
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    required
-                    autoComplete="off"
-                  />
+                  <Input id="subject" name="subject" value={formData.subject} onChange={handleInputChange} required />
                 </div>
 
                 <div>
                   <Label htmlFor="message">Message *</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={5}
-                    required
-                    autoComplete="off"
-                  />
+                  <Textarea id="message" name="message" value={formData.message} onChange={handleInputChange} rows={5} required />
                 </div>
 
                 <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    'Sending...'
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      Send Message
-                    </>
-                  )}
+                  {isSubmitting ? 'Sending...' : <><Send className="w-4 h-4" />Send Message</>}
                 </Button>
               </form>
             </CardContent>
