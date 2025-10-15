@@ -1,7 +1,6 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
 import nodemailer from 'nodemailer'
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' })
   }
@@ -13,24 +12,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // Create a transporter using Gmail SMTP
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS // Use App Password if 2FA is enabled
+        pass: process.env.GMAIL_PASS
       }
     })
 
     await transporter.sendMail({
-      from: email, // sender (visitor)
-      to: process.env.GMAIL_USER, // your Gmail
+      from: email,
+      to: process.env.GMAIL_USER,
       subject: `Portfolio Contact Form: ${subject}`,
-      html: `
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong><br>${message}</p>
-      `
+      html: `<p><strong>Name:</strong> ${name}</p>
+             <p><strong>Email:</strong> ${email}</p>
+             <p><strong>Message:</strong><br>${message}</p>`
     })
 
     return res.status(200).json({ message: 'Email sent successfully' })
