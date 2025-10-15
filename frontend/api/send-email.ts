@@ -1,24 +1,24 @@
-import nodemailer from 'nodemailer'
+import nodemailer from "nodemailer";
 
 export default async function handler(req: any, res: any) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' })
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
   }
 
-  const { name, email, subject, message } = req.body
+  const { name, email, subject, message } = req.body;
 
   if (!name || !email || !subject || !message) {
-    return res.status(400).json({ message: 'All fields are required' })
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
         user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS
-      }
-    })
+        pass: process.env.GMAIL_PASS, // App Password if 2FA enabled
+      },
+    });
 
     await transporter.sendMail({
       from: email,
@@ -26,12 +26,12 @@ export default async function handler(req: any, res: any) {
       subject: `Portfolio Contact Form: ${subject}`,
       html: `<p><strong>Name:</strong> ${name}</p>
              <p><strong>Email:</strong> ${email}</p>
-             <p><strong>Message:</strong><br>${message}</p>`
-    })
+             <p><strong>Message:</strong><br>${message}</p>`,
+    });
 
-    return res.status(200).json({ message: 'Email sent successfully' })
+    return res.status(200).json({ message: "Email sent successfully" });
   } catch (error) {
-    console.error(error)
-    return res.status(500).json({ message: 'Internal server error' })
+    console.error("Failed to send email:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 }

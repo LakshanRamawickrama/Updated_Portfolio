@@ -19,10 +19,7 @@ export function Contact() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -57,8 +54,9 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="py-16 px-4">
+    <section id="contact" className="py-16 px-4 bg-gray-50">
       <div className="max-w-6xl mx-auto">
+        {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 rounded-full mb-4">
             <Mail className="w-4 h-4 text-green-500" />
@@ -73,17 +71,14 @@ export function Contact() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Contact Information */}
+          {/* Left: Contact Info & References */}
           <div className="space-y-6">
-            <Card className="hover-elevate">
+            <Card className="hover-elevate border border-gray-200 shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Mail className="w-5 h-5 text-primary" />
-                  Contact Information
+                  <Mail className="w-5 h-5 text-primary" /> Contact Information
                 </CardTitle>
-                <CardDescription>
-                  Let's connect and discuss opportunities
-                </CardDescription>
+                <CardDescription>Let's connect and discuss opportunities</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -105,7 +100,7 @@ export function Contact() {
               </CardContent>
             </Card>
 
-            <Card className="hover-elevate">
+            <Card className="hover-elevate border border-gray-200 shadow-sm">
               <CardHeader>
                 <CardTitle>Professional References</CardTitle>
                 <CardDescription>Available upon request</CardDescription>
@@ -123,13 +118,11 @@ export function Contact() {
             </Card>
           </div>
 
-          {/* Contact Form */}
-          <Card className="hover-elevate">
+          {/* Right: Contact Form */}
+          <Card className="hover-elevate border border-gray-200 shadow-sm">
             <CardHeader>
               <CardTitle>Send a Message</CardTitle>
-              <CardDescription>
-                I'll get back to you as soon as possible
-              </CardDescription>
+              <CardDescription>I'll get back to you as soon as possible</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -158,7 +151,7 @@ export function Contact() {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <Label htmlFor="subject">Subject *</Label>
                   <Input
@@ -170,7 +163,7 @@ export function Contact() {
                     autoComplete="off"
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="message">Message *</Label>
                   <Textarea
@@ -184,15 +177,14 @@ export function Contact() {
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full gap-2"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Sending...' : (
                     <>
-                      <Send className="w-4 h-4" />
-                      Send Message
+                      <Send className="w-4 h-4" /> Send Message
                     </>
                   )}
                 </Button>
