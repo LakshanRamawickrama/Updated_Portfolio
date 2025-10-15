@@ -28,32 +28,19 @@ export function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-
-    try {
-      const response = await fetch("http://rgrlakshan.pythonanywhere.com/api/contact/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      })
-
-      if (!response.ok) throw new Error("Failed to send message")
-
+    
+    // TODO: Implement actual form submission
+    console.log('Form submitted:', formData)
+    
+    // Simulate form submission
+    setTimeout(() => {
+      setIsSubmitting(false)
       toast({
         title: "Message sent!",
         description: "Thank you for your message. I'll get back to you soon.",
       })
-
       setFormData({ name: '', email: '', subject: '', message: '' })
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again later.",
-        variant: "destructive"
-      })
-      console.error(error)
-    } finally {
-      setIsSubmitting(false)
-    }
+    }, 1000)
   }
 
   return (
@@ -104,6 +91,23 @@ export function Contact() {
                 </div>
               </CardContent>
             </Card>
+
+            <Card className="hover-elevate">
+              <CardHeader>
+                <CardTitle>Professional References</CardTitle>
+                <CardDescription>Available upon request</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <p className="font-medium text-sm">Mrs D.N.P. Attanayake</p>
+                  <p className="text-xs text-muted-foreground">Senior Lecturer, SLIATE Galle</p>
+                </div>
+                <div>
+                  <p className="font-medium text-sm">Mrs P.K.A.G. Shashika</p>
+                  <p className="text-xs text-muted-foreground">Executive Officer, Bank Of Ceylon</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Contact Form */}
@@ -118,7 +122,7 @@ export function Contact() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name">Name *</Label>
                     <Input
                       id="name"
                       name="name"
@@ -129,7 +133,7 @@ export function Contact() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">Email *</Label>
                     <Input
                       id="email"
                       name="email"
@@ -143,7 +147,7 @@ export function Contact() {
                 </div>
                 
                 <div>
-                  <Label htmlFor="subject">Subject</Label>
+                  <Label htmlFor="subject">Subject *</Label>
                   <Input
                     id="subject"
                     name="subject"
@@ -155,7 +159,7 @@ export function Contact() {
                 </div>
                 
                 <div>
-                  <Label htmlFor="message">Message</Label>
+                  <Label htmlFor="message">Message *</Label>
                   <Textarea
                     id="message"
                     name="message"
