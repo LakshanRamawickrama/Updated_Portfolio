@@ -1,10 +1,12 @@
+import express, { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
-export default async function handler(req: any, res: any) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
+dotenv.config();
 
+const router = express.Router();
+
+router.post('/', async (req: Request, res: Response) => {
   const { name, email, subject, message } = req.body;
 
   if (!name || !email || !subject || !message) {
@@ -33,4 +35,11 @@ export default async function handler(req: any, res: any) {
     console.error('Failed to send email:', err);
     res.status(500).json({ message: 'Failed to send email' });
   }
-}
+});
+
+// For GET request (avoid 405)
+router.get('/', (_req: Request, res: Response) => {
+  res.status(200).json({ message: 'Email API endpoint (use POST method)' });
+});
+
+export default router;
