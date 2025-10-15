@@ -1,7 +1,6 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import nodemailer from 'nodemailer';
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -13,30 +12,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // Create a transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.GMAIL_USER, // your Gmail address
-        pass: process.env.GMAIL_PASS, // App password
+        user: process.env.GMAIL_USER,          // your Gmail address
+        pass: process.env.GMAIL_APP_PASSWORD,  // Gmail App Password
       },
     });
 
-    // Email options
-    const mailOptions = {
+    await transporter.sendMail({
       from: `"${name}" <${email}>`,
-      to: process.env.GMAIL_USER, // your receiving email
-      subject: subject,
+      to: process.env.GMAIL_USER,
+      subject: `[Portfolio Contact] ${subject}`,
       text: message,
       html: `<p>${message}</p><p>From: ${name} (${email})</p>`,
-    };
+    });
 
-    // Send email
-    await transporter.sendMail(mailOptions);
-
-    return res.status(200).json({ message: 'Email sent successfully!' });
-  } catch (error) {
-    console.error('Failed to send email:', error);
-    return res.status(500).json({ message: 'Failed to send email', error });
+    res.status(200).json({ message: 'Email sent successfully' });
+  } catch (err) {
+    console.error('Failed to send email:', err);
+    res.status(500).json({ message: 'Failed to send email' });
   }
 }
