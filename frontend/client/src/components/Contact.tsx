@@ -30,7 +30,8 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch('/api/send-email', {
+      // ✅ Use your actual deployed backend endpoint
+      const res = await fetch('https://updated-portfolio-five-delta.vercel.app/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -84,9 +85,7 @@ export function Contact() {
                   <Mail className="w-5 h-5 text-primary" />
                   Contact Information
                 </CardTitle>
-                <CardDescription>
-                  Let's connect and discuss opportunities
-                </CardDescription>
+                <CardDescription>Let's connect and discuss opportunities</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -130,9 +129,7 @@ export function Contact() {
           <Card className="hover-elevate">
             <CardHeader>
               <CardTitle>Send a Message</CardTitle>
-              <CardDescription>
-                I'll get back to you as soon as possible
-              </CardDescription>
+              <CardDescription>I'll get back to you as soon as possible</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -145,6 +142,7 @@ export function Contact() {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
+                      autoComplete="name"
                     />
                   </div>
                   <div>
@@ -156,6 +154,7 @@ export function Contact() {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
+                      autoComplete="email"
                     />
                   </div>
                 </div>
@@ -168,6 +167,7 @@ export function Contact() {
                     value={formData.subject}
                     onChange={handleInputChange}
                     required
+                    autoComplete="off"
                   />
                 </div>
 
@@ -180,6 +180,7 @@ export function Contact() {
                     onChange={handleInputChange}
                     rows={5}
                     required
+                    autoComplete="off"
                   />
                 </div>
 
