@@ -13,31 +13,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // Configure Nodemailer with Gmail SMTP
+    // Create a transporter
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true, // SSL
+      service: 'gmail',
       auth: {
         user: process.env.GMAIL_USER, // your Gmail address
-        pass: process.env.GMAIL_PASS, // Gmail App Password
+        pass: process.env.GMAIL_PASS, // App password
       },
     });
 
-    await transporter.sendMail({
+    // Email options
+    const mailOptions = {
       from: `"${name}" <${email}>`,
-      to: process.env.GMAIL_USER,
-      subject: `Portfolio Contact: ${subject}`,
-      html: `
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong><br>${message}</p>
-      `,
-    });
+      to: process.env.GMAIL_USER, // your receiving email
+      subject: subject,
+      text: message,
+      html: `<p>${message}</p><p>From: ${name} (${email})</p>`,
+    };
 
-    return res.status(200).json({ message: 'Email sent successfully' });
-  } catch (error: any) {
-    console.error('Failed to send email:', error.message || error);
-    return res.status(500).json({ message: 'Internal server error' });
+    // Send email
+    await transporter.sendMail(mailOptions);
+
+    return res.status(200).json({ message: 'Email sent successfully!' });
+  } catch (error) {
+    console.error('Failed to send email:', error);
+    return res.status(500).json({ message: 'Failed to send email', error });
   }
 }

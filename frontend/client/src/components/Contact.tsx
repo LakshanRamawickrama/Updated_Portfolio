@@ -1,47 +1,63 @@
-import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Mail, Phone, MapPin, Send } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast'
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 export function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
-    message: ''
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
-    // TODO: Implement actual form submission
-    console.log('Form submitted:', formData)
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false)
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data?.message || 'Failed to send email');
+      }
+
       toast({
-        title: "Message sent!",
+        title: 'Message sent!',
         description: "Thank you for your message. I'll get back to you soon.",
-      })
-      setFormData({ name: '', email: '', subject: '', message: '' })
-    }, 1000)
-  }
+      });
+
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (err: any) {
+      console.error(err);
+      toast({
+        title: 'Error',
+        description: err.message || 'Something went wrong. Please try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="contact" className="py-16 px-4">
@@ -51,7 +67,7 @@ export function Contact() {
             <Mail className="w-4 h-4 text-green-500" />
             <span className="text-sm font-medium text-green-500">Let's Connect</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-green-500 to-primary bg-clip-text text-transparent" data-testid="heading-contact">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-green-500 to-primary bg-clip-text text-transparent">
             Get In Touch
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -73,15 +89,15 @@ export function Contact() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center gap-3" data-testid="contact-email">
+                <div className="flex items-center gap-3">
                   <Mail className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm">rgrlakshan@gmail.com</span>
                 </div>
-                <div className="flex items-center gap-3" data-testid="contact-phone">
+                <div className="flex items-center gap-3">
                   <Phone className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm">0715341931</span>
                 </div>
-                <div className="flex items-start gap-3" data-testid="contact-address">
+                <div className="flex items-start gap-3">
                   <MapPin className="w-4 h-4 text-muted-foreground mt-0.5" />
                   <span className="text-sm">
                     No: 292, Mahakendawala,<br />
@@ -129,7 +145,6 @@ export function Contact() {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      data-testid="input-name"
                     />
                   </div>
                   <div>
@@ -141,11 +156,10 @@ export function Contact() {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      data-testid="input-email"
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <Label htmlFor="subject">Subject *</Label>
                   <Input
@@ -154,10 +168,9 @@ export function Contact() {
                     value={formData.subject}
                     onChange={handleInputChange}
                     required
-                    data-testid="input-subject"
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="message">Message *</Label>
                   <Textarea
@@ -167,16 +180,10 @@ export function Contact() {
                     onChange={handleInputChange}
                     rows={5}
                     required
-                    data-testid="textarea-message"
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
-                  className="w-full gap-2"
-                  disabled={isSubmitting}
-                  data-testid="button-submit"
-                >
+                <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
                   {isSubmitting ? (
                     'Sending...'
                   ) : (
@@ -192,5 +199,5 @@ export function Contact() {
         </div>
       </div>
     </section>
-  )
+  );
 }
