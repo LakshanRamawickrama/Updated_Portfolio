@@ -142,6 +142,7 @@ export function Contact() {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
+                      autoComplete="name"
                     />
                   </div>
                   <div>
@@ -153,6 +154,7 @@ export function Contact() {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
+                      autoComplete="email"
                     />
                   </div>
                 </div>
@@ -165,6 +167,7 @@ export function Contact() {
                     value={formData.subject}
                     onChange={handleInputChange}
                     required
+                    autoComplete="off"
                   />
                 </div>
                 
@@ -177,6 +180,7 @@ export function Contact() {
                     onChange={handleInputChange}
                     rows={5}
                     required
+                    autoComplete="off"
                   />
                 </div>
 
