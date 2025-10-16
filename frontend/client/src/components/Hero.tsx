@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
-import { Download, Mail, Github, Linkedin, ArrowDown, Sparkles } from 'lucide-react'
+import { Download, Mail, Github, Linkedin, ArrowDown, Sparkles, Code, Cpu, Rocket } from 'lucide-react'
 import profileImage from '../assets/profile-pic.png'
-import resumePDF from '../assets/R.G.R. LAKSHAN - CV.pdf' // <-- import your resume
+import resumePDF from '../assets/R.G.R. LAKSHAN - CV.pdf'
 import { motion, useMotionValue } from 'framer-motion'
 import { useEffect } from 'react'
 
@@ -11,7 +11,6 @@ export function Hero() {
   }
 
   const handleResumeDownload = () => {
-    // Open resume in a new tab
     window.open(resumePDF, '_blank')
   }
 
@@ -19,7 +18,7 @@ export function Hero() {
     document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // --- Apple-style gentle 3D Tilt ---
+  // 3D Tilt
   const rotateX = useMotionValue(0)
   const rotateY = useMotionValue(0)
 
@@ -35,30 +34,58 @@ export function Hero() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [rotateX, rotateY])
 
+  // Floating background icons
+  const floatingIcons = [Code, Cpu, Rocket]
+
   return (
     <section className="relative min-h-screen flex items-center justify-center py-16 px-4 overflow-hidden bg-gradient-to-b from-background/90 via-background to-primary/5">
-      
-      {/* Subtle glowing background blobs */}
+
+      {/* Floating Background Icons */}
+      {floatingIcons.map((Icon, i) => (
+        <motion.div
+          key={i}
+          className="absolute text-primary/10"
+          initial={{ opacity: 0, y: 0 }}
+          animate={{
+            opacity: [0.1, 0.3, 0.1],
+            y: [0, -20, 0],
+            rotate: [0, 10, -10, 0],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 10 + i * 3,
+            ease: 'easeInOut',
+            delay: i,
+          }}
+          style={{
+            top: `${10 + i * 30}%`,
+            left: `${5 + i * 30}%`,
+            fontSize: 64,
+          }}
+        >
+          <Icon />
+        </motion.div>
+      ))}
+
+      {/* Glowing background blobs */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-20 left-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-60 h-60 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="max-w-5xl mx-auto text-center">
-        {/* 3D floating profile card with glow */}
+      <div className="max-w-5xl mx-auto text-center relative z-10">
+        {/* 3D floating profile card */}
         <motion.div
           className="relative mx-auto mb-10 w-64 h-64"
           style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
           transition={{ type: 'spring', stiffness: 150, damping: 18 }}
         >
-          {/* Rotating glow ring */}
           <motion.div
             className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-accent to-primary blur-xl opacity-60"
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 12, ease: 'linear' }}
           ></motion.div>
 
-          {/* Image container with glass effect */}
           <motion.div
             className="relative w-full h-full rounded-full backdrop-blur-md bg-white/10 border border-white/10 overflow-hidden shadow-[0_8px_40px_rgba(0,0,0,0.3)]"
             whileHover={{ scale: 1.05 }}
@@ -74,16 +101,21 @@ export function Hero() {
         </motion.div>
 
         {/* Name */}
-        <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent tracking-tight">
+        <motion.h1
+          className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent tracking-tight"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
           R.G.R. LAKSHAN
-        </h1>
+        </motion.h1>
 
         {/* Role */}
         <motion.div
           className="relative mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
         >
           <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-3">
             Software Engineering Intern
@@ -97,13 +129,23 @@ export function Hero() {
         </motion.div>
 
         {/* Summary */}
-        <p className="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-muted-foreground leading-relaxed">
+        <motion.p
+          className="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-muted-foreground leading-relaxed"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        >
           🚀 Passionate about crafting innovative digital experiences • 💡 Skilled in React, Node.js & Flutter • 
           🌱 Eager to learn, create, and inspire through technology
-        </p>
+        </motion.p>
 
         {/* Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <motion.div
+          className="flex flex-wrap justify-center gap-4 mb-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7, duration: 0.8 }}
+        >
           <Button 
             onClick={handleContactClick}
             size="lg"
@@ -113,7 +155,6 @@ export function Hero() {
             Let's Connect
           </Button>
 
-          {/* Resume Download Button with shine */}
           <Button 
             variant="outline" 
             size="lg"
@@ -124,7 +165,7 @@ export function Hero() {
             View Resume
             <span className="absolute top-0 left-0 w-0 h-full bg-white/20 transform -skew-x-12 transition-all duration-500 hover:w-full"></span>
           </Button>
-        </div>
+        </motion.div>
 
         {/* Social Links */}
         <div className="flex justify-center gap-6 mb-16">
@@ -147,13 +188,19 @@ export function Hero() {
         </div>
 
         {/* Scroll indicator */}
-        <Button
-          variant="ghost"
-          onClick={handleScrollDown}
-          className="animate-bounce hover:animate-none"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
         >
-          <ArrowDown className="w-6 h-6" />
-        </Button>
+          <Button
+            variant="ghost"
+            onClick={handleScrollDown}
+            className="animate-bounce hover:animate-none"
+          >
+            <ArrowDown className="w-6 h-6" />
+          </Button>
+        </motion.div>
       </div>
     </section>
   )
