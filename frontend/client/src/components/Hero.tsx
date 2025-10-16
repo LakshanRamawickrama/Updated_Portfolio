@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button'
 import { Download, Mail, Github, Linkedin, ArrowDown, Sparkles } from 'lucide-react'
 import profileImage from '../assets/profile-pic.png'
-import { motion, useMotionValue, useTransform } from 'framer-motion'
+import resumePDF from '../assets/R.G.R. LAKSHAN - CV.pdf' // <-- import your resume
+import { motion, useMotionValue } from 'framer-motion'
 import { useEffect } from 'react'
 
 export function Hero() {
@@ -10,7 +11,8 @@ export function Hero() {
   }
 
   const handleResumeDownload = () => {
-    console.log('Resume download clicked')
+    // Open resume in a new tab
+    window.open(resumePDF, '_blank')
   }
 
   const handleScrollDown = () => {
@@ -24,7 +26,7 @@ export function Hero() {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const { innerWidth, innerHeight } = window
-      const x = (e.clientX / innerWidth - 0.5) * 20 // gentle tilt
+      const x = (e.clientX / innerWidth - 0.5) * 20
       const y = (e.clientY / innerHeight - 0.5) * 20
       rotateX.set(-y)
       rotateY.set(x)
@@ -110,14 +112,17 @@ export function Hero() {
             <Mail className="w-5 h-5" />
             Let's Connect
           </Button>
+
+          {/* Resume Download Button with shine */}
           <Button 
             variant="outline" 
             size="lg"
             onClick={handleResumeDownload}
-            className="gap-2 px-8 py-3 text-lg font-semibold border-2 hover:bg-primary/5 hover:scale-105 transition-all duration-300"
+            className="relative overflow-hidden gap-2 px-8 py-3 text-lg font-semibold border-2 transition-all duration-300 hover:scale-105 hover:border-primary hover:bg-gradient-to-r hover:from-primary/10 hover:via-primary/5 hover:to-primary/10"
           >
             <Download className="w-5 h-5" />
             View Resume
+            <span className="absolute top-0 left-0 w-0 h-full bg-white/20 transform -skew-x-12 transition-all duration-500 hover:w-full"></span>
           </Button>
         </div>
 
