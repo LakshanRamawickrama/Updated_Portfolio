@@ -26,38 +26,45 @@ export function ThemeProvider({
   storageKey = 'ui-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
+  const [theme, setThemeState] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   )
 
   useEffect(() => {
     const root = window.document.documentElement
 
-    root.classList.remove('light', 'dark')
+    const applyTheme = (theme: Theme) => {
+      root.classList.remove('light', 'dark')
 
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches
-        ? 'dark'
-        : 'light'
-
-      root.classList.add(systemTheme)
-      return
+      if (theme === 'system') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
+        root.classList.add(systemTheme)
+      } else {
+        root.classList.add(theme)
+      }
     }
 
-    root.classList.add(theme)
+    applyTheme(theme)
+
+    // Listen to system theme changes ONLY if theme === 'system'
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleSystemChange = () => {
+      if (theme === 'system') applyTheme('system')
+    }
+
+    mediaQuery.addEventListener('change', handleSystemChange)
+    return () => mediaQuery.removeEventListener('change', handleSystemChange)
   }, [theme])
 
-  const value = {
-    theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme)
-      setTheme(theme)
-    },
+  const setTheme = (newTheme: Theme) => {
+    localStorage.setItem(storageKey, newTheme)
+    setThemeState(newTheme)
   }
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
+    <ThemeProviderContext.Provider {...props} value={{ theme, setTheme }}>
       {children}
     </ThemeProviderContext.Provider>
   )
@@ -65,9 +72,6 @@ export function ThemeProvider({
 
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext)
-
-  if (context === undefined)
-    throw new Error('useTheme must be used within a ThemeProvider')
-
+  if (!context) throw new Error('useTheme must be used within a ThemeProvider')
   return context
 }
