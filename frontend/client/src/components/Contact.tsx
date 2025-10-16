@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,12 +15,19 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,18 +35,34 @@ export function Contact() {
     setIsSubmitting(true);
 
     try {
+      const templateParams = {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        time: new Date().toLocaleString(),
+      };
+
       await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        formData,
+        templateParams,
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
-      toast({ title: 'Message sent!', description: "Thank you for your message." });
+      toast({
+        title: '✅ Message Sent!',
+        description: 'Thank you for reaching out. I will respond soon.',
+      });
+
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
-      console.error(err);
-      toast({ title: 'Error', description: 'Failed to send email.', variant: 'destructive' });
+      console.error('Email send error:', err);
+      toast({
+        title: '❌ Error',
+        description: 'Failed to send email. Please check EmailJS settings.',
+        variant: 'destructive',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -42,16 +71,20 @@ export function Contact() {
   return (
     <section id="contact" className="py-16 px-4">
       <div className="max-w-6xl mx-auto">
+        {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 rounded-full mb-4">
             <Mail className="w-4 h-4 text-green-500" />
-            <span className="text-sm font-medium text-green-500">Let's Connect</span>
+            <span className="text-sm font-medium text-green-500">
+              Let's Connect
+            </span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-green-500 to-primary bg-clip-text text-transparent">
             Get In Touch
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            🤝 Ready to collaborate on exciting projects or discuss opportunities? I'd love to hear from you!
+            🤝 Ready to collaborate on exciting projects or discuss
+            opportunities? I'd love to hear from you!
           </p>
         </div>
 
@@ -64,7 +97,9 @@ export function Contact() {
                   <Mail className="w-5 h-5 text-primary" />
                   Contact Information
                 </CardTitle>
-                <CardDescription>Let's connect and discuss opportunities</CardDescription>
+                <CardDescription>
+                  Let's connect and discuss opportunities
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -78,8 +113,10 @@ export function Contact() {
                 <div className="flex items-start gap-3">
                   <MapPin className="w-4 h-4 text-muted-foreground mt-0.5" />
                   <span className="text-sm">
-                    No: 292, Mahakendawala,<br />
-                    Kithalagama East 01,<br />
+                    No: 292, Mahakendawala,
+                    <br />
+                    Kithalagama East 01,
+                    <br />
                     Thihagoda, Matara, Sri Lanka
                   </span>
                 </div>
@@ -94,11 +131,15 @@ export function Contact() {
               <CardContent className="space-y-4">
                 <div>
                   <p className="font-medium text-sm">Mrs D.N.P. Attanayake</p>
-                  <p className="text-xs text-muted-foreground">Senior Lecturer, SLIATE Galle</p>
+                  <p className="text-xs text-muted-foreground">
+                    Senior Lecturer, SLIATE Galle
+                  </p>
                 </div>
                 <div>
                   <p className="font-medium text-sm">Mrs P.K.A.G. Shashika</p>
-                  <p className="text-xs text-muted-foreground">Executive Officer, Bank Of Ceylon</p>
+                  <p className="text-xs text-muted-foreground">
+                    Executive Officer, Bank Of Ceylon
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -108,33 +149,69 @@ export function Contact() {
           <Card className="hover-elevate">
             <CardHeader>
               <CardTitle>Send a Message</CardTitle>
-              <CardDescription>I'll get back to you as soon as possible</CardDescription>
+              <CardDescription>
+                I'll get back to you as soon as possible
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Name *</Label>
-                    <Input id="name" name="name" value={formData.name} onChange={handleInputChange} required />
+                    <Input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      autoComplete="name"
+                    />
                   </div>
                   <div>
                     <Label htmlFor="email">Email *</Label>
-                    <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} required />
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      autoComplete="email"
+                    />
                   </div>
                 </div>
 
                 <div>
                   <Label htmlFor="subject">Subject *</Label>
-                  <Input id="subject" name="subject" value={formData.subject} onChange={handleInputChange} required />
+                  <Input
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    required
+                    autoComplete="off"
+                  />
                 </div>
 
                 <div>
                   <Label htmlFor="message">Message *</Label>
-                  <Textarea id="message" name="message" value={formData.message} onChange={handleInputChange} rows={5} required />
+                  <Textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows={5}
+                    required
+                    autoComplete="off"
+                  />
                 </div>
 
                 <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
-                  {isSubmitting ? 'Sending...' : <><Send className="w-4 h-4" /> Send Message</>}
+                  {isSubmitting ? 'Sending...' : (
+                    <>
+                      <Send className="w-4 h-4" /> Send Message
+                    </>
+                  )}
                 </Button>
               </form>
             </CardContent>
