@@ -157,7 +157,7 @@ export function Contact() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name">Name *</Label>
+                    <Label htmlFor="name">Name</Label>
                     <Input
                       id="name"
                       name="name"
@@ -168,7 +168,7 @@ export function Contact() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
                       name="email"
@@ -182,7 +182,7 @@ export function Contact() {
                 </div>
 
                 <div>
-                  <Label htmlFor="subject">Subject *</Label>
+                  <Label htmlFor="subject">Subject</Label>
                   <Input
                     id="subject"
                     name="subject"
@@ -194,7 +194,7 @@ export function Contact() {
                 </div>
 
                 <div>
-                  <Label htmlFor="message">Message *</Label>
+                  <Label htmlFor="message">Message</Label>
                   <Textarea
                     id="message"
                     name="message"
