@@ -2,6 +2,7 @@ import React from 'react'
 import { motion, Variants } from 'framer-motion'
 import { Feather, Code, User, Award } from 'lucide-react'
 
+/* ===== Feature Type ===== */
 interface Feature {
   title: string
   description: string
@@ -9,6 +10,7 @@ interface Feature {
   color: string
 }
 
+/* ===== Feature Data ===== */
 const features: Feature[] = [
   { title: 'Creative Design', description: 'Beautiful, intuitive interfaces', icon: Feather, color: 'from-purple-500 to-pink-500' },
   { title: 'Clean Code', description: 'Writing maintainable, scalable code', icon: Code, color: 'from-blue-500 to-cyan-500' },
@@ -16,41 +18,58 @@ const features: Feature[] = [
   { title: 'Quality', description: 'Delivering excellence in every project', icon: Award, color: 'from-orange-500 to-yellow-500' },
 ]
 
-// Container variants for staggered children
-const containerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-}
+/* ===== Letter Animation for Header ===== */
+const splitText = (text: string) => text.split('')
 
-// Card variants for smooth pop-up
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 20, scale: 0.8 },
-  visible: {
+const letterVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { type: 'spring', stiffness: 120, damping: 20 },
-  },
+    transition: {
+      type: 'spring',
+      stiffness: 120,
+      damping: 15,
+      delay: i * 0.05, // stagger letters
+    },
+  }),
 }
 
+/* ===== Card Variants ===== */
+const containerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.2 } },
+}
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 20, scale: 0.8 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', stiffness: 120, damping: 20 } },
+}
+
+/* ===== AboutMe Component ===== */
 export const AboutMe: React.FC = () => {
+  const headerText = 'About Me'
+  const letters = splitText(headerText)
+
   return (
     <section className="relative py-24 bg-gradient-to-b from-background via-muted/10 to-background overflow-hidden" id="about">
       <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-12">
-        {/* Header */}
-        <motion.h2
-          className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-        >
-          About Me
-        </motion.h2>
+
+        {/* Animated Header */}
+        <h2 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent text-center flex justify-center">
+          {letters.map((char, i) => (
+            <motion.span
+              key={i}
+              custom={i}
+              variants={letterVariants}
+              initial="hidden"
+              animate="visible"
+              className="inline-block"
+            >
+              {char === ' ' ? '\u00A0' : char}
+            </motion.span>
+          ))}
+        </h2>
 
         {/* Summary */}
         <motion.p
@@ -93,6 +112,7 @@ export const AboutMe: React.FC = () => {
             )
           })}
         </motion.div>
+
       </div>
     </section>
   )
