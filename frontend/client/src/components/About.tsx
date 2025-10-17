@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { motion, Variants } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Feather, Code, User, Award } from 'lucide-react'
 
 interface Feature {
@@ -16,30 +16,18 @@ const features: Feature[] = [
   { title: 'Quality', description: 'Delivering excellence in every project', icon: Award, color: 'from-orange-500 to-yellow-500' },
 ]
 
-// Motion variants
-const containerVariants: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.2 } },
-}
-
-const getCardVariants = (index: number, isMobile: boolean): Variants => ({
-  hidden: { opacity: 0, y: 30, x: isMobile ? (index % 2 === 0 ? -50 : 50) : 0 },
-  visible: { opacity: 1, y: 0, x: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-})
-
 export const AboutMe: React.FC = () => {
-  const [isMobile, setIsMobile] = useState<boolean>(false)
+  const [isMobile, setIsMobile] = useState(false)
 
-  // Detect mobile
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768)
-    handleResize() // initial check
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   return (
-    <section id="about" className="relative py-24 bg-gradient-to-b from-background via-muted/10 to-background overflow-hidden">
+    <section className="relative py-24 bg-gradient-to-b from-background via-muted/10 to-background overflow-hidden" id="about">
       <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-12">
         {/* Header */}
         <motion.h2
@@ -52,7 +40,7 @@ export const AboutMe: React.FC = () => {
           About Me
         </motion.h2>
 
-        {/* Short Summary */}
+        {/* Summary */}
         <motion.p
           className="max-w-3xl text-center text-lg text-muted-foreground leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
@@ -70,23 +58,26 @@ export const AboutMe: React.FC = () => {
         {/* Feature Grid */}
         <motion.div
           className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-12"
-          variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          {features.map((feature, index) => {
+          {features.map((feature, i) => {
             const Icon = feature.icon
+
+            // Set initial X offset only for mobile
+            const initialX = isMobile ? (i % 2 === 0 ? -50 : 50) : 0
+
             return (
               <motion.div
-                key={index}
+                key={i}
                 className="flex flex-col items-center text-center px-6 py-8 rounded-2xl shadow-lg border border-primary/10 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 transition-all duration-500 cursor-default"
-                variants={getCardVariants(index, isMobile)}
+                initial={{ opacity: 0, y: 30, x: initialX }}
+                whileInView={{ opacity: 1, y: 0, x: 0 }}
+                transition={{ duration: 0.6, ease: 'easeOut', delay: i * 0.15 }}
                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }}
               >
-                <div
-                  className={`w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br ${feature.color} mb-4 text-white shadow-md`}
-                >
+                <div className={`w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br ${feature.color} mb-4 text-white shadow-md`}>
                   <Icon className="w-8 h-8" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
