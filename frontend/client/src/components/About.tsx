@@ -1,35 +1,43 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useEffect, useState } from 'react'
+import { motion, Variants } from 'framer-motion'
 import { Feather, Code, User, Award } from 'lucide-react'
 
-const features = [
-  {
-    title: 'Creative Design',
-    description: 'Beautiful, intuitive interfaces',
-    icon: Feather,
-    color: 'from-purple-500 to-pink-500',
-  },
-  {
-    title: 'Clean Code',
-    description: 'Writing maintainable, scalable code',
-    icon: Code,
-    color: 'from-blue-500 to-cyan-500',
-  },
-  {
-    title: 'User Focus',
-    description: 'Prioritizing user experience',
-    icon: User,
-    color: 'from-green-500 to-emerald-500',
-  },
-  {
-    title: 'Quality',
-    description: 'Delivering excellence in every project',
-    icon: Award,
-    color: 'from-orange-500 to-yellow-500',
-  },
+interface Feature {
+  title: string
+  description: string
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  color: string
+}
+
+const features: Feature[] = [
+  { title: 'Creative Design', description: 'Beautiful, intuitive interfaces', icon: Feather, color: 'from-purple-500 to-pink-500' },
+  { title: 'Clean Code', description: 'Writing maintainable, scalable code', icon: Code, color: 'from-blue-500 to-cyan-500' },
+  { title: 'User Focus', description: 'Prioritizing user experience', icon: User, color: 'from-green-500 to-emerald-500' },
+  { title: 'Quality', description: 'Delivering excellence in every project', icon: Award, color: 'from-orange-500 to-yellow-500' },
 ]
 
-export function AboutMe() {
+// Motion variants
+const containerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.2 } },
+}
+
+const getCardVariants = (index: number, isMobile: boolean): Variants => ({
+  hidden: { opacity: 0, y: 30, x: isMobile ? (index % 2 === 0 ? -50 : 50) : 0 },
+  visible: { opacity: 1, y: 0, x: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+})
+
+export const AboutMe: React.FC = () => {
+  const [isMobile, setIsMobile] = useState<boolean>(false)
+
+  // Detect mobile
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    handleResize() // initial check
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
     <section id="about" className="relative py-24 bg-gradient-to-b from-background via-muted/10 to-background overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-12">
@@ -38,6 +46,7 @@ export function AboutMe() {
           className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8 }}
         >
           About Me
@@ -48,24 +57,32 @@ export function AboutMe() {
           className="max-w-3xl text-center text-lg text-muted-foreground leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          I am <strong>R.G.R. Lakshan</strong>, a passionate Full Stack Developer and Software Engineer Intern at <span className="text-primary font-semibold">NAITA Head Office</span>. I specialize in building modern, user-friendly web applications with <strong>React, Node.js, and TypeScript</strong>.  
-          I love turning complex problems into elegant digital solutions, learning new technologies, and creating applications that deliver real impact.
+          I am <strong>R.G.R. Lakshan</strong>, a passionate Full Stack Developer and Software Engineer Intern at{' '}
+          <span className="text-primary font-semibold">NAITA Head Office</span>. I specialize in building modern,
+          user-friendly web applications with <strong>React, Node.js, and TypeScript</strong>. I love turning complex
+          problems into elegant digital solutions, learning new technologies, and creating applications that deliver real
+          impact.
         </motion.p>
 
         {/* Feature Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-12">
-          {features.map((feature, i) => {
+        <motion.div
+          className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-12"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          {features.map((feature, index) => {
             const Icon = feature.icon
             return (
               <motion.div
-                key={i}
+                key={index}
                 className="flex flex-col items-center text-center px-6 py-8 rounded-2xl shadow-lg border border-primary/10 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 transition-all duration-500 cursor-default"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                variants={getCardVariants(index, isMobile)}
                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }}
-                transition={{ duration: 0.5, delay: i * 0.2 }}
               >
                 <div
                   className={`w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br ${feature.color} mb-4 text-white shadow-md`}
@@ -77,7 +94,7 @@ export function AboutMe() {
               </motion.div>
             )
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
