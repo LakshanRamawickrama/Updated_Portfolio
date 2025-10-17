@@ -1,8 +1,17 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { Feather, Code, User, Award } from 'lucide-react'
 
-const features = [
+// Feature type
+interface Feature {
+  title: string
+  description: string
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  color: string
+}
+
+// Features array
+const features: Feature[] = [
   {
     title: 'Creative Design',
     description: 'Beautiful, intuitive interfaces',
@@ -29,22 +38,32 @@ const features = [
   },
 ]
 
-// Motion Variants
-const containerVariants = {
+// Motion variants for container
+const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.2, // Stagger feature cards
+      staggerChildren: 0.2,
     },
   },
 }
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-}
+// Motion variants for each card
+const getCardVariants = (index: number): Variants => ({
+  hidden: {
+    opacity: 0,
+    y: 30,
+    x: window.innerWidth < 768 ? (index % 2 === 0 ? -50 : 50) : 0,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    x: 0,
+    transition: { duration: 0.6, ease: 'easeOut' },
+  },
+})
 
-export function AboutMe() {
+export const AboutMe: React.FC = () => {
   return (
     <section
       id="about"
@@ -85,13 +104,13 @@ export function AboutMe() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          {features.map((feature, i) => {
+          {features.map((feature, index) => {
             const Icon = feature.icon
             return (
               <motion.div
-                key={i}
+                key={index}
                 className="flex flex-col items-center text-center px-6 py-8 rounded-2xl shadow-lg border border-primary/10 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 transition-all duration-500 cursor-default"
-                variants={cardVariants}
+                variants={getCardVariants(index)}
                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }}
               >
                 <div
