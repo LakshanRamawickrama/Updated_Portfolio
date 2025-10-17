@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import { Feather, Code, User, Award } from 'lucide-react'
 
@@ -17,15 +17,6 @@ const features: Feature[] = [
 ]
 
 export const AboutMe: React.FC = () => {
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
   return (
     <section className="relative py-24 bg-gradient-to-b from-background via-muted/10 to-background overflow-hidden" id="about">
       <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-12">
@@ -56,26 +47,18 @@ export const AboutMe: React.FC = () => {
         </motion.p>
 
         {/* Feature Grid */}
-        <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-12"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          {features.map((feature, i) => {
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-12">
+          {features.map((feature, index) => {
             const Icon = feature.icon
-
-            // Set initial X offset only for mobile
-            const initialX = isMobile ? (i % 2 === 0 ? -50 : 50) : 0
-
             return (
               <motion.div
-                key={i}
+                key={index}
                 className="flex flex-col items-center text-center px-6 py-8 rounded-2xl shadow-lg border border-primary/10 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 transition-all duration-500 cursor-default"
-                initial={{ opacity: 0, y: 30, x: initialX }}
-                whileInView={{ opacity: 1, y: 0, x: 0 }}
-                transition={{ duration: 0.6, ease: 'easeOut', delay: i * 0.15 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, ease: 'easeOut', delay: index * 0.2 }}
                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }}
+                viewport={{ once: true, amount: 0.3 }}
               >
                 <div className={`w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br ${feature.color} mb-4 text-white shadow-md`}>
                   <Icon className="w-8 h-8" />
@@ -85,7 +68,7 @@ export const AboutMe: React.FC = () => {
               </motion.div>
             )
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   )
