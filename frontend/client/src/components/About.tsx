@@ -26,7 +26,7 @@ export const AboutMe: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
         >
           About Me
         </motion.h2>
@@ -37,7 +37,7 @@ export const AboutMe: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 1, ease: [0.4, 0, 0.2, 1], delay: 0.2 }}
         >
           I am <strong>R.G.R. Lakshan</strong>, a passionate Full Stack Developer and Software Engineer Intern at{' '}
           <span className="text-primary font-semibold">NAITA Head Office</span>. I specialize in building modern,
@@ -54,10 +54,10 @@ export const AboutMe: React.FC = () => {
               <motion.div
                 key={index}
                 className="flex flex-col items-center text-center px-6 py-8 rounded-2xl shadow-lg border border-primary/10 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 transition-all duration-500 cursor-default"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, ease: 'easeOut', delay: index * 0.2 }}
-                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }}
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1], delay: index * 0.15 }}
+                whileHover={{ scale: 1.05 }}
                 viewport={{ once: true, amount: 0.3 }}
               >
                 <div className={`w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br ${feature.color} mb-4 text-white shadow-md`}>
