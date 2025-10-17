@@ -11,6 +11,7 @@ const skillsData = [
     skills: [
       { name: 'JavaScript', level: 90 },
       { name: 'Java', level: 85 },
+      { name: 'Python', level: 90 },
       { name: 'C#', level: 80 },
       { name: 'HTML/CSS', level: 95 },
     ],
@@ -20,6 +21,7 @@ const skillsData = [
     icon: Database,
     color: 'from-green-500 to-emerald-500',
     skills: [
+      { name: 'Django', level: 90 },
       { name: 'MySQL', level: 85 },
       { name: 'Supabase', level: 80 },
       { name: 'Firebase', level: 75 },
@@ -31,7 +33,7 @@ const skillsData = [
     icon: Wrench,
     color: 'from-purple-500 to-pink-500',
     skills: [
-      { name: 'React.js', level: 90 },
+      { name: 'React', level: 90 },
       { name: 'Flutter', level: 75 },
       { name: 'Unity', level: 70 },
       { name: 'Git/GitHub', level: 85 },
