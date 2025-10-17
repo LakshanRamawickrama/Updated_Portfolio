@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 import { Feather, Code, User, Award } from 'lucide-react'
 
 interface Feature {
@@ -16,6 +16,27 @@ const features: Feature[] = [
   { title: 'Quality', description: 'Delivering excellence in every project', icon: Award, color: 'from-orange-500 to-yellow-500' },
 ]
 
+// Container variants for staggered children
+const containerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+}
+
+// Card variants for smooth pop-up
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 20, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: 'spring', stiffness: 120, damping: 20 },
+  },
+}
+
 export const AboutMe: React.FC = () => {
   return (
     <section className="relative py-24 bg-gradient-to-b from-background via-muted/10 to-background overflow-hidden" id="about">
@@ -26,7 +47,7 @@ export const AboutMe: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ type: 'spring', stiffness: 100, damping: 20 }}
         >
           About Me
         </motion.h2>
@@ -37,7 +58,7 @@ export const AboutMe: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 1, ease: [0.4, 0, 0.2, 1], delay: 0.2 }}
+          transition={{ type: 'spring', stiffness: 100, damping: 20, delay: 0.2 }}
         >
           I am <strong>R.G.R. Lakshan</strong>, a passionate Full Stack Developer and Software Engineer Intern at{' '}
           <span className="text-primary font-semibold">NAITA Head Office</span>. I specialize in building modern,
@@ -47,18 +68,21 @@ export const AboutMe: React.FC = () => {
         </motion.p>
 
         {/* Feature Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-12">
+        <motion.div
+          className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-12"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
           {features.map((feature, index) => {
             const Icon = feature.icon
             return (
               <motion.div
                 key={index}
                 className="flex flex-col items-center text-center px-6 py-8 rounded-2xl shadow-lg border border-primary/10 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 transition-all duration-500 cursor-default"
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1], delay: index * 0.15 }}
+                variants={cardVariants}
                 whileHover={{ scale: 1.05 }}
-                viewport={{ once: true, amount: 0.3 }}
               >
                 <div className={`w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br ${feature.color} mb-4 text-white shadow-md`}>
                   <Icon className="w-8 h-8" />
@@ -68,7 +92,7 @@ export const AboutMe: React.FC = () => {
               </motion.div>
             )
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
