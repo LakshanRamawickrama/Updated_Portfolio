@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -6,6 +7,8 @@ import { motion } from 'framer-motion'
 import flowCaseImage from '../assets/modern_legal_case_m.png'
 import studentSystemImage from '../assets/student_management_s.gif'
 import carGameImage from '../assets/2d_car_racing_game.gif'
+import demoVideo from '../assets/2d_cargame_demo_video.mp4'
+import { VideoPopup } from './VideoPopup'
 
 const projectsData = [
   {
@@ -14,8 +17,8 @@ const projectsData = [
     type: 'Individual Project',
     technologies: ['React', 'Supabase', 'Encryption', 'Authentication'],
     image: flowCaseImage,
-    githubUrl: '#',
-    liveUrl: '#',
+    githubUrl: 'https://github.com/LakshanRamawickrama/Lowyer-Case.git',
+    liveUrl: '', // no video
   },
   {
     title: 'Student Management System',
@@ -23,8 +26,8 @@ const projectsData = [
     type: 'Group Project',
     technologies: ['Flutter', 'Firebase', 'Real-time Data', 'Cross-platform'],
     image: studentSystemImage,
-    githubUrl: '#',
-    liveUrl: '#',
+    githubUrl: 'https://github.com/LakshanRamawickrama/Student_m_System.git',
+    liveUrl: '', // No video
   },
   {
     title: '2D Car Racing Game',
@@ -32,16 +35,13 @@ const projectsData = [
     type: 'Individual Project',
     technologies: ['Unity', 'C#', 'Inkscape', 'Game Development'],
     image: carGameImage,
-    githubUrl: '#',
-    liveUrl: '#',
+    githubUrl: 'https://github.com/LakshanRamawickrama/Speed-Rider.git',
+    liveUrl: demoVideo, // No video
   },
 ]
 
 export function Projects() {
-  const handleProjectAction = (action: string, project: string) => {
-    console.log(`${action} clicked for ${project}`)
-  }
-
+  const [activeVideo, setActiveVideo] = useState<string | null>(null)
   const floatingIcons = [Code, Cpu, Rocket]
 
   return (
@@ -145,22 +145,39 @@ export function Projects() {
                 </CardContent>
 
                 <CardFooter className="gap-2 pt-4 flex flex-wrap">
+                  {/* GitHub Button */}
                   <Button
                     variant="outline"
                     size="sm"
-                    className="gap-2 flex-1 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300"
-                    onClick={() => handleProjectAction('GitHub', project.title)}
+                    className="gap-2 flex-1 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 p-0"
                   >
-                    <Github className="w-4 h-4" />
-                    Code
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center w-full h-full gap-2 px-4 py-2"
+                    >
+                      <Github className="w-4 h-4" />
+                      Code
+                    </a>
                   </Button>
+
+                  {/* Demo Button */}
                   <Button
                     size="sm"
-                    className="gap-2 flex-1 hover:bg-accent/10 transition-all duration-300"
-                    onClick={() => handleProjectAction('Live Demo', project.title)}
+                    className="gap-2 flex-1 hover:bg-accent/10 transition-all duration-300 p-0"
+                    onClick={() => {
+                      if (project.liveUrl && project.liveUrl !== '#') {
+                        setActiveVideo(project.liveUrl)
+                      } else {
+                        alert('Demo not available for this project')
+                      }
+                    }}
                   >
-                    <ExternalLink className="w-4 h-4" />
-                    Demo
+                    <div className="flex items-center justify-center w-full h-full gap-2 px-4 py-2">
+                      <ExternalLink className="w-4 h-4" />
+                      Demo
+                    </div>
                   </Button>
                 </CardFooter>
               </Card>
@@ -168,6 +185,14 @@ export function Projects() {
           ))}
         </div>
       </div>
+
+      {/* Video Popup */}
+      {activeVideo && (
+        <VideoPopup
+          videoSrc={activeVideo}
+          onClose={() => setActiveVideo(null)}
+        />
+      )}
     </section>
   )
 }
