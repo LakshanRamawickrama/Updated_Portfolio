@@ -50,7 +50,9 @@ export function AboutMe() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          I am <strong>R.G.R. Lakshan</strong>, a passionate Full Stack Developer and Software Engineer Intern at <span className="text-primary font-semibold">NAITA Head Office</span>. I specialize in building modern, user-friendly web applications with <strong>React, Node.js, and TypeScript</strong>.  
+          I am <strong>R.G.R. Lakshan</strong>, a passionate Full Stack Developer and Software Engineer Intern at <span className="text-primary font-semibold">NAITA Head Office</span>,
+          currently studying for my <span className="text-primary font-semibold">Higher National Diploma in Information Technology (HNDIT)</span> at <span className="text-primary font-semibold">SLIATE – Galle</span>. 
+          I specialize in building modern, user-friendly web applications with <strong>React, Node.js, Django, and TypeScript</strong>.  
           I love turning complex problems into elegant digital solutions, learning new technologies, and creating applications that deliver real impact.
         </motion.p>
 
