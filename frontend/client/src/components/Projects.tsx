@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Github, Code, Cpu, Rocket } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import flowCaseImage from '../assets/modern_legal_case_m.png';
-import studentSystemImage from '../assets/student_management_s.gif';
-import carGameImage from '../assets/2d_car_racing_game.gif';
-import medicareImage from '../assets/medicare.png';
-import medscriptImage from '../assets/medscript.png';
-import demoVideo from '../assets/2d_cargame_demo_video.mp4';
-import { VideoPopup } from './VideoPopup';
+import { useState } from 'react'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { ExternalLink, Github, Code, Cpu, Rocket } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import flowCaseImage from '../assets/modern_legal_case_m.png'
+import studentSystemImage from '../assets/student_management_s.gif'
+import carGameImage from '../assets/2d_car_racing_game.gif'
+import medicareImage from '../assets/medicare.png'
+import medscriptImage from '../assets/medscript.png'
+import demoVideo from '../assets/2d_cargame_demo_video.mp4'
+import { VideoPopup } from './VideoPopup'
 
 const allProjectsData = [
   {
@@ -58,19 +58,21 @@ const allProjectsData = [
     githubUrl: 'https://github.com/LakshanRamawickrama/Medscript.git',
     liveUrl: '',
   },
-];
+]
 
 export function Projects() {
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const [visibleProjects, setVisibleProjects] = useState(3);
-  const floatingIcons = [Code, Cpu, Rocket];
+  const [activeVideo, setActiveVideo] = useState<string | null>(null)
+  const [visibleProjects, setVisibleProjects] = useState(3)
+  const floatingIcons = [Code, Cpu, Rocket]
 
-  const loadMoreProjects = () => setVisibleProjects(allProjectsData.length);
-  const showLessProjects = () => setVisibleProjects(3);
+  const loadMoreProjects = () => setVisibleProjects(allProjectsData.length)
+  const showLessProjects = () => setVisibleProjects(3)
 
   return (
-    <section id="projects" className="relative py-16 overflow-hidden bg-hero-gradient">
-      
+    <section
+      id="projects"
+      className="relative py-16 overflow-hidden bg-gradient-to-b from-background/50 via-muted/20 to-background/80"
+    >
       {/* Floating Background Icons */}
       {floatingIcons.map((Icon, i) => (
         <motion.div
@@ -79,19 +81,45 @@ export function Projects() {
           initial={{ opacity: 0, y: 0 }}
           animate={{
             opacity: [0.1, 0.3, 0.1],
-            y: [0, -20, 0],
-            rotate: [0, 10, -10, 0],
+            y: [0, -25, 0],
+            rotate: [0, 15, -15, 0],
           }}
           transition={{
             repeat: Infinity,
-            duration: 10 + i * 3,
+            duration: 12 + i * 3,
             ease: 'easeInOut',
             delay: i,
           }}
-          style={{ top: `${10 + i * 35}%`, left: `${5 + i * 30}%`, fontSize: 64 }}
+          style={{
+            top: `${10 + i * 35}%`,
+            left: `${5 + i * 35}%`,
+            fontSize: 64,
+          }}
         >
           <Icon />
         </motion.div>
+      ))}
+
+      {/* Animated Floating Circles */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full bg-primary/5"
+          initial={{ opacity: 0.1, scale: 0.5 }}
+          animate={{ y: [0, -30, 0], opacity: [0.1, 0.3, 0.1], scale: [0.5, 1, 0.5] }}
+          transition={{
+            repeat: Infinity,
+            duration: 15 + i * 2,
+            ease: 'easeInOut',
+            delay: i,
+          }}
+          style={{
+            width: `${30 + i * 10}px`,
+            height: `${30 + i * 10}px`,
+            top: `${Math.random() * 80}%`,
+            left: `${Math.random() * 90}%`,
+          }}
+        />
       ))}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -102,7 +130,7 @@ export function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/20 rounded-full mb-4">
             <ExternalLink className="w-4 h-4 text-accent" />
             <span className="text-sm font-medium text-accent">Portfolio Showcase</span>
           </div>
@@ -114,23 +142,19 @@ export function Projects() {
           </p>
         </motion.div>
 
-        {/* Projects Grid with Stagger */}
-        <motion.div
-          className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.15 } } }}
-        >
+        {/* Projects Grid */}
+        <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence>
             {allProjectsData.slice(0, visibleProjects).map((project, index) => (
               <motion.div
                 key={index}
-                variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ scale: 1.03 }}
               >
-                <Card className="flex flex-col h-full border-2 border-transparent hover:border-primary transition-all shadow-lg hover:shadow-xl overflow-hidden">
+                <Card className="flex flex-col h-full border-2 border-transparent hover:border-primary/40 transition-all shadow-lg hover:shadow-2xl overflow-hidden">
                   {/* Project Image */}
                   <div className="relative h-64 w-full overflow-hidden">
                     <img
@@ -203,7 +227,7 @@ export function Projects() {
               </motion.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </div>
 
         {/* More / Show Less Button */}
         <div className="text-center mt-12">
@@ -222,5 +246,5 @@ export function Projects() {
       {/* Video Popup */}
       {activeVideo && <VideoPopup videoSrc={activeVideo} onClose={() => setActiveVideo(null)} />}
     </section>
-  );
+  )
 }
