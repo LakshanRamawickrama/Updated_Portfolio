@@ -1,7 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { GraduationCap, Calendar, Award, Code, Cpu, Rocket } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { GraduationCap, Calendar, Award, Code, Cpu, Rocket } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const educationData = [
   {
@@ -29,7 +29,7 @@ const educationData = [
     description: 'Completed with four (A) passes, two (B) passes and three (C) passes.',
     type: 'Secondary Education',
   },
-]
+];
 
 const coursesData = [
   {
@@ -42,7 +42,7 @@ const coursesData = [
     provider: 'Open Learning Platform University of Moratuwa',
     status: 'In Progress',
   },
-]
+];
 
 const certificationsData = [
   {
@@ -59,13 +59,13 @@ const certificationsData = [
     description:
       'Successfully completed a 540-hour full-time Diploma in English, enhancing proficiency in written and spoken English, grammar, and communication skills.',
   },
-]
+];
 
 export function Education() {
-  const floatingIcons = [Code, Cpu, Rocket]
+  const floatingIcons = [Code, Cpu, Rocket];
 
   return (
-    <section id="education" className="py-16 px-4 relative bg-muted/30 overflow-hidden">
+    <section id="education" className="py-16 px-4 relative bg-hero-gradient overflow-hidden">
       {/* Floating Background Icons */}
       {floatingIcons.map((Icon, i) => (
         <motion.div
@@ -223,5 +223,5 @@ export function Education() {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Code, Database, Wrench, Star, TrendingUp } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Code, Database, Wrench, Star, TrendingUp } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const skillsData = [
   {
@@ -39,14 +39,18 @@ const skillsData = [
       { name: 'Git/GitHub', level: 85 },
     ],
   },
-]
+];
 
 export function Skills() {
   return (
-    <section
-      id="skills"
-      className="py-20 px-4 bg-gradient-to-br from-background via-muted/20 to-background"
-    >
+    <section id="skills" className="relative py-20 px-4 overflow-hidden bg-hero-gradient">
+      
+      {/* Floating Background Blobs */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-10 left-5 w-40 h-40 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-10 right-10 w-60 h-60 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
@@ -67,26 +71,26 @@ export function Skills() {
           </p>
         </motion.div>
 
-        {/* Skill Cards */}
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* Skill Cards with Stagger */}
+        <motion.div
+          className="grid md:grid-cols-3 gap-8"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.2 } } }}
+        >
           {skillsData.map((category, index) => {
-            const IconComponent = category.icon
+            const IconComponent = category.icon;
             return (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+                variants={{ hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0 } }}
                 whileHover={{ scale: 1.03 }}
               >
                 <Card className="group relative overflow-hidden border-2 hover:border-primary/20 transition-all duration-500">
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-                  ></div>
+                  <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
                   <CardHeader className="text-center pb-6 relative">
-                    <div
-                      className={`w-16 h-16 bg-gradient-to-br ${category.color} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}
-                    >
+                    <div className={`w-16 h-16 bg-gradient-to-br ${category.color} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                       <IconComponent className="w-8 h-8 text-white" />
                     </div>
                     <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors duration-300">
@@ -103,10 +107,7 @@ export function Skills() {
                         className="space-y-2"
                       >
                         <div className="flex justify-between items-center">
-                          <Badge
-                            variant="secondary"
-                            className="hover:bg-primary/10 transition-colors duration-300"
-                          >
+                          <Badge variant="secondary" className="hover:bg-primary/10 transition-colors duration-300">
                             {skill.name}
                           </Badge>
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -114,7 +115,6 @@ export function Skills() {
                             {skill.level}%
                           </div>
                         </div>
-                        {/* Animated Skill Progress */}
                         <div className="w-full bg-muted/50 rounded-full h-2 overflow-hidden">
                           <motion.div
                             className={`h-full bg-gradient-to-r ${category.color} rounded-full`}
@@ -128,9 +128,9 @@ export function Skills() {
                   </CardContent>
                 </Card>
               </motion.div>
-            )
+            );
           })}
-        </div>
+        </motion.div>
 
         {/* Additional Skills */}
         <motion.div
@@ -168,5 +168,5 @@ export function Skills() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,16 +1,16 @@
-import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { ExternalLink, Github, Code, Cpu, Rocket } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import flowCaseImage from '../assets/modern_legal_case_m.png'
-import studentSystemImage from '../assets/student_management_s.gif'
-import carGameImage from '../assets/2d_car_racing_game.gif'
-import medicareImage from '../assets/medicare.png'
-import medscriptImage from '../assets/medscript.png'
-import demoVideo from '../assets/2d_cargame_demo_video.mp4'
-import { VideoPopup } from './VideoPopup'
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ExternalLink, Github, Code, Cpu, Rocket } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import flowCaseImage from '../assets/modern_legal_case_m.png';
+import studentSystemImage from '../assets/student_management_s.gif';
+import carGameImage from '../assets/2d_car_racing_game.gif';
+import medicareImage from '../assets/medicare.png';
+import medscriptImage from '../assets/medscript.png';
+import demoVideo from '../assets/2d_cargame_demo_video.mp4';
+import { VideoPopup } from './VideoPopup';
 
 const allProjectsData = [
   {
@@ -51,25 +51,26 @@ const allProjectsData = [
   },
   {
     title: 'MedScript',
-    description: 'A web-based Medical Prescription Upload System with two roles User and Pharmacy with React, Supabase.Pharmacies can view uploads, create and send quotations to users, and receive notifications when users accept or reject quotations..',
+    description: 'A web-based Medical Prescription Upload System with two roles User and Pharmacy with React, Supabase.Pharmacies can view uploads, create and send quotations to users, and receive notifications when users accept or reject quotations.',
     type: 'Individual Project',
     technologies: ['React', 'Tailwind', 'Supabase'],
     image: medscriptImage,
     githubUrl: 'https://github.com/LakshanRamawickrama/Medscript.git',
     liveUrl: '',
   },
-]
+];
 
 export function Projects() {
-  const [activeVideo, setActiveVideo] = useState<string | null>(null)
-  const [visibleProjects, setVisibleProjects] = useState(3)
-  const floatingIcons = [Code, Cpu, Rocket]
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [visibleProjects, setVisibleProjects] = useState(3);
+  const floatingIcons = [Code, Cpu, Rocket];
 
-  const loadMoreProjects = () => setVisibleProjects(allProjectsData.length)
-  const showLessProjects = () => setVisibleProjects(3)
+  const loadMoreProjects = () => setVisibleProjects(allProjectsData.length);
+  const showLessProjects = () => setVisibleProjects(3);
 
   return (
-    <section id="projects" className="relative py-16 bg-muted/30 overflow-hidden">
+    <section id="projects" className="relative py-16 overflow-hidden bg-hero-gradient">
+      
       {/* Floating Background Icons */}
       {floatingIcons.map((Icon, i) => (
         <motion.div
@@ -113,16 +114,20 @@ export function Projects() {
           </p>
         </motion.div>
 
-        {/* Projects Grid */}
-        <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {/* Projects Grid with Stagger */}
+        <motion.div
+          className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.15 } } }}
+        >
           <AnimatePresence>
             {allProjectsData.slice(0, visibleProjects).map((project, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
                 exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ scale: 1.03 }}
               >
                 <Card className="flex flex-col h-full border-2 border-transparent hover:border-primary transition-all shadow-lg hover:shadow-xl overflow-hidden">
@@ -159,9 +164,8 @@ export function Projects() {
                     </div>
                   </CardContent>
 
-                  {/* Original Buttons */}
+                  {/* Buttons */}
                   <CardFooter className="gap-2 pt-4 flex flex-wrap">
-                    {/* GitHub Button */}
                     <Button
                       variant="outline"
                       size="sm"
@@ -178,15 +182,14 @@ export function Projects() {
                       </a>
                     </Button>
 
-                    {/* Demo Button */}
                     <Button
                       size="sm"
                       className="gap-2 flex-1 hover:bg-accent/10 transition-all duration-300 p-0"
                       onClick={() => {
                         if (project.liveUrl && project.liveUrl !== '#') {
-                          setActiveVideo(project.liveUrl)
+                          setActiveVideo(project.liveUrl);
                         } else {
-                          alert('Demo not available for this project')
+                          alert('Demo not available for this project');
                         }
                       }}
                     >
@@ -200,7 +203,7 @@ export function Projects() {
               </motion.div>
             ))}
           </AnimatePresence>
-        </div>
+        </motion.div>
 
         {/* More / Show Less Button */}
         <div className="text-center mt-12">
@@ -219,5 +222,5 @@ export function Projects() {
       {/* Video Popup */}
       {activeVideo && <VideoPopup videoSrc={activeVideo} onClose={() => setActiveVideo(null)} />}
     </section>
-  )
+  );
 }
