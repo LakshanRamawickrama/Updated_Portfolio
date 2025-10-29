@@ -90,7 +90,7 @@ export function Hero() {
           transition={{ delay: 0.3, duration: 0.8 }}
         >
           <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-3">
-            Software Engineering Intern
+            Software Engineer
           </h2>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20 shadow-sm">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
